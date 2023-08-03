@@ -1,0 +1,107 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+    id 'org.jetbrains.dokka'
+}
+
+android {
+    namespace 'kr.hstar.commonutil'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += '-Xexplicit-api=strict'
+    }
+    resourcePrefix 'hstar_'
+}
+
+dokkaHtml {
+    dokkaSourceSets {
+        outputDirectory.set(new File("$buildDir/dokka"))
+
+        named("main") {
+            sourceLink {
+                path = "src/main/java"
+                lineSuffix = "#L"
+            }
+            noAndroidSdkLink.set(false)
+        }
+    }
+}
+
+// 3.기존 library.jar 파일을 삭제.
+task deleteObjectJar(type: Delete){
+    delete 'release/library.jar'
+}
+
+// 4. release 폴더에 library 이름으로 jar 생성.
+task exportJar(type: Copy){
+    from('build/intermediates/aar_main_jar/release')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar', 'library.jar')
+}
+
+// 5. exportJar 실행시 deleteObjectJar가 실행되도록 설정
+exportJar.dependsOn(deleteObjectJar, build)
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.github.hstar00700'
+                artifactId = 'hUtil'
+                version = '1.0.0'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'com.github.hstar00700'
+                artifactId = 'hUtil-debug'
+                version = '1.0.0'
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.core:core-ktx:+'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Dokka
+    implementation 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10'
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.6.10")
+}
