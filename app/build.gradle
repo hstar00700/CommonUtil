@@ -104,4 +104,12 @@ dependencies {
     // Dokka
     implementation 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10'
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.6.10")
+
+    // android lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$life_cycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$life_cycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$life_cycle_version"
+
+
 }
