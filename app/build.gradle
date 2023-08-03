@@ -32,7 +32,7 @@ android {
         jvmTarget = '1.8'
         freeCompilerArgs += '-Xexplicit-api=strict'
     }
-    resourcePrefix 'hstar_'
+    resourcePrefix ''
 }
 
 dokkaHtml {
