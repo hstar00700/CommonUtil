@@ -76,7 +76,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.hstar00700'
                 artifactId = 'hUtil'
-                version = '1.0.0'
+                version = '0.0.1'
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
@@ -85,7 +85,7 @@ afterEvaluate {
 
                 groupId = 'com.github.hstar00700'
                 artifactId = 'hUtil-debug'
-                version = '1.0.0'
+                version = '0.0.1'
             }
         }
     }
