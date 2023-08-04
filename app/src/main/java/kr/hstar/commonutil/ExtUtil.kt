@@ -16,10 +16,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.util.*
+
+public fun <T : Any> Single<T>.withThread(): Single<T> = subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+public fun <T : Any> BehaviorSubject<T>.withThread(): io.reactivex.rxjava3.core.Observable<T> = subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+public fun <T : Any> PublishSubject<T>.withThread(): io.reactivex.rxjava3.core.Observable<T> = subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 private fun <T> Flow<T>.throttleFirstV(periodMillis: Long) : Flow<T> {
     require(periodMillis > 0) { "periodMillis should be positive" }

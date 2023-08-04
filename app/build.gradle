@@ -13,7 +13,7 @@ android {
         minSdk 28
         targetSdk 33
         versionCode 1
-        versionName "0.0.3"
+        versionName "0.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,7 +59,7 @@ task exportJar(type: Copy){
     from('build/intermediates/aar_main_jar/release')
     into('release/')
     include('classes.jar')
-    rename('classes.jar', 'library.jar')
+    rename('classes.jar', 'hUtil.jar')
 }
 
 // 5. exportJar 실행시 deleteObjectJar가 실행되도록 설정
@@ -76,7 +76,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.github.hstar00700'
                 artifactId = 'hUtil'
-                version = '0.0.3'
+                version = '0.0.4'
             }
             // Creates a Maven publication called “debug”.
             debug(MavenPublication) {
@@ -97,6 +97,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:+'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -111,5 +112,22 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$life_cycle_version"
 
+    // Rx
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.2'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.1'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation "com.jakewharton.rxbinding4:rxbinding:4.0.0"
 
+    // Rx Lifecycle
+    implementation "com.trello.rxlifecycle4:rxlifecycle:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-android:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-components:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-components-preference:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-android-lifecycle:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-kotlin:$rx_life_cycle_version"
+    implementation "com.trello.rxlifecycle4:rxlifecycle-android-lifecycle-kotlin:$rx_life_cycle_version"
+
+    // dataStore
+    implementation "androidx.datastore:datastore-preferences:$data_store_version"
+    implementation "androidx.datastore:datastore-preferences-core:$data_store_version"
 }
