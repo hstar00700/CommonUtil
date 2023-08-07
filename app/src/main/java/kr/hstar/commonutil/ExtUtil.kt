@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.util.*
+import kotlin.system.exitProcess
 
 public fun <T : Any> Single<T>.withThread(): Single<T> = subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 public fun <T : Any> BehaviorSubject<T>.withThread(): io.reactivex.rxjava3.core.Observable<T> = subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -156,4 +158,10 @@ public fun Activity.getPackageVersionCode(): Int {
         val pi = this.packageManager.getPackageInfo(this.packageName, 0)
         return pi.versionCode
     }.getOrDefault(0)
+}
+
+public fun Activity.exitApp() {
+    ActivityCompat.finishAffinity(this)
+    System.runFinalization()
+    exitProcess(0)
 }

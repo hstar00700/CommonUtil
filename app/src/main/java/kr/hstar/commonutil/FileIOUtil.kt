@@ -6,6 +6,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 
+/**
+ * 지정된 디렉토리 존재 확인(없으면 생성)
+ */
+public fun checkDirectory(dirName: String): Boolean {
+    return  runCatching {
+        val newDir = File(dirName)
+        if (!newDir.exists()) {
+            newDir.mkdirs()
+        } else true
+    }.getOrDefault(false)
+}
+
 public suspend fun deleteInPathFolder(targetDir: File) {
     CoroutineScope(Dispatchers.IO).launch {
         if (targetDir.exists()) {
